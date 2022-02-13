@@ -1,4 +1,4 @@
-import 'ListSearcher.dart';
+import 'list_searcher.dart';
 
 void main() {
   final listSearcher = ListSearcher(["A", "B", "C"]);
