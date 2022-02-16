@@ -20,9 +20,8 @@ class LinkedList<T> extends Iterable {
     if (isEmpty)
       _head = _tail = node;
     else {
-      var newHead = node;
-      newHead.next = _head;
-      _head = newHead;
+      node.next = _head;
+      _head = node;
     }
   }
 
@@ -31,25 +30,26 @@ class LinkedList<T> extends Iterable {
     if (isEmpty)
       _head = _tail = node;
     else {
-      var newTail = node;
-      _tail!.next = newTail;
-      _tail = newTail;
+      _tail!.next = node;
+      _tail = node;
     }
   }
 
   void removeFirst() {
+    if (identical(_head, _tail))
+      _head = _tail = null;
     _head = _head?.next;
   }
 
   void removeLast() {
-    if (_head == _tail) {
+    if (identical(_head, _tail)) {
       _head = _tail = null;
       return;
     }
 
     var current = _head;
     while (current != null) {
-      if (current.next == _tail) break;
+      if (identical(current.next, _tail)) break;
       current = current.next;
     }
     current?.next = null;
@@ -94,7 +94,7 @@ class _Iterator<T> implements Iterator {
 
   @override
   bool moveNext() {
-    final moveNext = _linkedList._tail != _current && _linkedList._head != null;
+    final moveNext = !identical(_linkedList._tail, _current) && _linkedList._head != null;
     if (moveNext) {
       if (_current == null)
         _current = _linkedList._head;
