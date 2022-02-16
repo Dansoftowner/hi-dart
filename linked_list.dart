@@ -6,6 +6,9 @@ void main() {
   l.addFirst("D");
 
   print(l);
+  l.reverse();
+  print(l);
+
   while (l.isNotEmpty) l.removeFirst();
   print(l);
 }
@@ -14,6 +17,8 @@ void main() {
 class LinkedList<T> extends Iterable {
   _Node<T>? _head;
   _Node<T>? _tail;
+
+  bool get isSingle => identical(_head, _tail);
 
   void addFirst(T item) {
     var node = _Node(item);
@@ -36,13 +41,13 @@ class LinkedList<T> extends Iterable {
   }
 
   void removeFirst() {
-    if (identical(_head, _tail))
+    if (isSingle)
       _head = _tail = null;
     _head = _head?.next;
   }
 
   void removeLast() {
-    if (identical(_head, _tail)) {
+    if (isSingle) {
       _head = _tail = null;
       return;
     }
@@ -54,6 +59,26 @@ class LinkedList<T> extends Iterable {
     }
     current?.next = null;
     _tail = current;
+  }
+
+  void reverse() {
+    if (isEmpty)
+      return;
+
+    var beforeCurrent = _head;
+    var current = _head?.next;
+
+    while(current != null) {
+      var originalNext = current.next;
+      current.next = beforeCurrent;
+
+      beforeCurrent = current;
+      current = originalNext;
+    }
+
+    _tail = _head;
+    _head = beforeCurrent;
+    _tail?.next = null;
   }
 
   @override
